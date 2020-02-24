@@ -129,7 +129,7 @@ The example used to create these expressions is [here](https://github.com/Esri/a
 #### Example output: 
 > In this area, 32.7% is protected. The main protection is non-community. 
 
-### Third example: Combining examples in the pop up
+### Third example: Combining arcade expressions in the pop up
 Content in the configure pop up (it has styling buttons):
 
 > **{expression/expr3}** **Human Modification**
@@ -279,12 +279,14 @@ Content in the configure pop up (it has styling buttons):
 
 > **Low** **Human Modification**
 > **Mean Score:  0.02**
+>
 > Urban: 0.4%   
 > Rainfed agriculture: 0%   
 > Irrigated agriculture: 0%  
 > Rangeland: 0%  
 > 
 > **Proportion Protected 65.3%**
+>
 > Non-community protection: 32.2%   
 > Community protection: 0.2%     
 > _Human Modification Score is dimentionless and ranges from 0 (no modification) to 1 (complete modification)._
