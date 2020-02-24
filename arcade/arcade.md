@@ -2,7 +2,7 @@
 
 ## Arcade expressions to create pop ups in arcgis online
 
-The example used to create these expressions is [here](https://github.com/Esri/arcade-expressions/blob/master/popup/top-five-list.md). 
+The tutorial used to create these expressions is [here](https://github.com/Esri/arcade-expressions/blob/master/popup/top-five-list.md). 
 
 ### First example: create a sentence with the mean human modification and the main type of human activity
 
