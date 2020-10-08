@@ -1,7 +1,7 @@
 library(foreign)
 library(plyr)
 library(dplyr)
-setwd("~/Documents/GitHub/vizzWork/MOL")
+
 adm0 = read.dbf("country_data/gadm36_0.dbf")
 adm_val = read.csv("country_data/country_val_MOL.csv")
 grid_intersect = read.csv("country_data/gadm.csv")
