@@ -40,17 +40,17 @@ res_grid=grid_intersect %>%
 get_bio_sentence = function(df){
   taxa_names = c("all","amphibians", "birds", "mammals", "reptiles"
                  #, "cacti", "conifers"
-                 )
+  )
   max_vals = c(df$max_all, df$max_amph, df$max_bird, df$max_mamm, df$max_rept
                #, df$max_cact, df$max_coni
-               )
+  )
   top_vals = which(max_vals == 10)
   nb_taxa = length(top_vals)
   sentence_tx = character()
   if(nb_taxa!=0){
     sel_taxa = taxa_names[top_vals]
     if("all"%in%sel_taxa){
-      sentence_tx = "has high biodiversity rarity for the available taxa. "
+      sentence_tx = "has high biodiversity rarity of terrestrial land vertebrates at a global scale. "
     }
     if("all"%in%sel_taxa&nb_taxa>1){
       sentence_tx2 = character()
@@ -61,12 +61,12 @@ get_bio_sentence = function(df){
           tx_bit = paste0(substr(tx_bit,1,nchar(tx_bit)-2), " and ")
         }
         if(tx == nb_taxa){#if the taxa we are in is the last one, we remove the space and coma and add a dot
-          tx_bit = paste0(substr(tx_bit,1,nchar(tx_bit)-2), ". ")
+          tx_bit = paste0(substr(tx_bit,1,nchar(tx_bit)-2), " is also high. ")
         }
         sentence_tx2 = paste0(sentence_tx2, tx_bit)
       }
-      sentence_tx2 = paste0( " and in particular of ",sentence_tx2) 
-      sentence_tx = paste0(substr(sentence_tx,1,nchar(sentence_tx)-2), sentence_tx2)
+      sentence_tx2 = paste0( " When analysed as single taxons, the rarity of ",sentence_tx2) 
+      sentence_tx = paste0(sentence_tx, sentence_tx2)#paste0(substr(sentence_tx,1,nchar(sentence_tx)-2), sentence_tx2)
     }
   }
   return(sentence_tx)
@@ -74,7 +74,7 @@ get_bio_sentence = function(df){
 }
 
 
-get_bio_sentence(df = res_grid[1,])
+get_bio_sentence(df = res_grid[which(res_grid$GID_0 =="ARG"),])
 
 get_human_sentence = function(df){
   
@@ -112,6 +112,7 @@ for (i in 1:length(res_grid$GID_0)){
 sentence_res = ldply(sentence_list)
 sentence_res$GID_0 = res_grid$GID_0
 head(sentence_res)
-
+names(sentence_res)[1] = "sentence"
+#sentence_res$V1
 res_grid_sentence = res_grid%>% inner_join(sentence_res, by = "GID_0")
-write.csv(res_grid_sentence, "nrc_sentence_no_trees.csv")
+write.csv(sentence_res, "nrc_sentence_no_trees.csv")
