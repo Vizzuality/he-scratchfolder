@@ -40,10 +40,10 @@ res_grid=grid_intersect %>%
 get_bio_sentence = function(df){
   taxa_names = c("all","amphibians", "birds", "mammals", "reptiles"
                  #, "cacti", "conifers"
-                 )
+  )
   max_vals = c(df$max_all, df$max_amph, df$max_bird, df$max_mamm, df$max_rept
                #, df$max_cact, df$max_coni
-               )
+  )
   top_vals = which(max_vals == 10)
   nb_taxa = length(top_vals)
   sentence_tx = character()
