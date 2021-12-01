@@ -6,23 +6,34 @@ import arcpy
 from sys import argv
 import arcpy
 import numpy as np
+
+
 def getPresentSpecies(table):
-    arr = arcpy.da.TableToNumPyArray(table,["SliceNumber","amphibians"])
-    out_arr = arr[arr["amphibians"]>0]
+    arr = arcpy.da.TableToNumPyArray(table, ["SliceNumber", "amphibians"])
+    out_arr = arr[arr["amphibians"] > 0]
     arr_lit = out_arr["SliceNumber"].tolist()
     arr_int = map(int, arr_lit)
-    res = ', '.join(map(str, arr_int))  
+    res = ', '.join(map(str, arr_int))
     out = f"SliceNumber IN ({res})"
     return out
+
+
 import arcpy
 import numpy
+
+
 def getAreaRaster(rst):
     arr = arcpy.da.TableToNumPyArray(rst, "COUNT")
-    a,= arr.tolist()
+    a, = arr.tolist()
     res = a[0]
     return res
 
-def SampleAmph(crf_name="amphibians.crf", geometry="unique_square", output_table="C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\SuperSample.gdb\\Sample_amphibia1_TableSelect"):  # SampleAmph
+
+def SampleAmph(
+    crf_name="amphibians.crf",
+    geometry="unique_square",
+    output_table="C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\SuperSample.gdb\\Sample_amphibia1_TableSelect"
+):  # SampleAmph
 
     # To allow overwriting outputs change overwriteOutput option to True.
     arcpy.env.overwriteOutput = False
@@ -31,10 +42,20 @@ def SampleAmph(crf_name="amphibians.crf", geometry="unique_square", output_table
     arcpy.CheckOutExtension("spatial")
     arcpy.CheckOutExtension("ImageAnalyst")
 
-
     # Process: Sample (Sample) (ia)
     table_in = "C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\SuperSample.gdb\\Sample_amphibia1"
-    arcpy.ia.Sample(in_rasters=[crf_name], in_location_data=geometry, out_table=table_in, resampling_type="NEAREST", unique_id_field="unique", process_as_multidimensional="ALL_SLICES", acquisition_definition=[], statistics_type="SUM", percentile_value=None, buffer_distance="", layout="ROW_WISE", generate_feature_class="TABLE")
+    arcpy.ia.Sample(in_rasters=[crf_name],
+                    in_location_data=geometry,
+                    out_table=table_in,
+                    resampling_type="NEAREST",
+                    unique_id_field="unique",
+                    process_as_multidimensional="ALL_SLICES",
+                    acquisition_definition=[],
+                    statistics_type="SUM",
+                    percentile_value=None,
+                    buffer_distance="",
+                    layout="ROW_WISE",
+                    generate_feature_class="TABLE")
 
     # Process: Calculate SQL expression (Calculate Value) ()
     if table_in:
@@ -43,11 +64,21 @@ def SampleAmph(crf_name="amphibians.crf", geometry="unique_square", output_table
     # Process: Table Select (Table Select) (analysis)
     select_table = "C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\SuperSample.gdb\\Sample_amphibia1_TableSelect"
     if table_in:
-        arcpy.analysis.TableSelect(in_table=table_in, out_table=select_table, where_clause=output_value)
+        arcpy.analysis.TableSelect(in_table=table_in,
+                                   out_table=select_table,
+                                   where_clause=output_value)
 
     # Process: Polygon to Raster (Polygon to Raster) (conversion)
     custom_raster = "C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\SuperSample.gdb\\unique_square_PolygonToRaster"
-    arcpy.conversion.PolygonToRaster(in_features=geometry, value_field="OBJECTID", out_rasterdataset=custom_raster, cell_assignment="CELL_CENTER", priority_field="NONE", cellsize="C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\amphibians_Subset.crf")
+    arcpy.conversion.PolygonToRaster(
+        in_features=geometry,
+        value_field="OBJECTID",
+        out_rasterdataset=custom_raster,
+        cell_assignment="CELL_CENTER",
+        priority_field="NONE",
+        cellsize=
+        "C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\amphibians_Subset.crf"
+    )
 
     # Process: Calculate Value (Calculate Value) ()
     if custom_raster:
@@ -55,9 +86,21 @@ def SampleAmph(crf_name="amphibians.crf", geometry="unique_square", output_table
 
     # Process: Calculate Field (Calculate Field) (management)
     if area_value and custom_raster and table_in:
-        output_table = arcpy.management.CalculateField(in_table=select_table, field="percentage_presence", expression=f"round((!amphibians!/{area_value})*100,2)", expression_type="PYTHON3", code_block="", field_type="TEXT")[0]
+        output_table = arcpy.management.CalculateField(
+            in_table=select_table,
+            field="percentage_presence",
+            expression=f"round((!amphibians!/{area_value})*100,2)",
+            expression_type="PYTHON3",
+            code_block="",
+            field_type="TEXT")[0]
+
 
 if __name__ == '__main__':
     # Global Environment settings
-    with arcpy.EnvManager(scratchWorkspace=r"C:\Users\Viz1\Documents\ArcGIS\Projects\SuperSample\SuperSample.gdb", workspace=r"C:\Users\Viz1\Documents\ArcGIS\Projects\SuperSample\SuperSample.gdb"):
+    with arcpy.EnvManager(
+            scratchWorkspace=
+            r"C:\Users\Viz1\Documents\ArcGIS\Projects\SuperSample\SuperSample.gdb",
+            workspace=
+            r"C:\Users\Viz1\Documents\ArcGIS\Projects\SuperSample\SuperSample.gdb"
+    ):
         SampleAmph(*argv[1:])

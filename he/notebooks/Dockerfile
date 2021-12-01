@@ -35,7 +35,7 @@ RUN git clone https://github.com/mapbox/tippecanoe.git && \
 RUN git clone git://github.com/mapbox/mbutil.git && \
 	cd mbutil && \
 	./mb-util -h && python setup.py install && cd ..
-    
+
 RUN export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 RUN pip install jupyter_contrib_nbextensions \
@@ -52,15 +52,7 @@ RUN pip install jupyter_contrib_nbextensions \
 RUN conda update -n base conda && conda install -c conda-forge \
             python-blosc \
             cytoolz \
-            gdal \
-            dask==2.30 \
-            xhistogram \
-            lz4 \
-            nomkl \
-            dask-labextension==5.0 \
-            python-graphviz \
-            tini==0.18.0 \
-            xarray=0.16.1
+            gdal
 
 # Enable extensions
 RUN jupyter contrib nbextension install --sys-prefix && \

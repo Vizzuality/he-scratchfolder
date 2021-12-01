@@ -192,9 +192,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index', 'he.tex',
-     u'he Documentation',
-     u"vizzuality", 'manual'),
+    ('index', 'he.tex', u'he Documentation', u"vizzuality", 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -221,9 +219,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [('index', 'he',
-              u'he Documentation',
-              [u"vizzuality"], 1)]
+man_pages = [('index', 'he', u'he Documentation', [u"vizzuality"], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -234,9 +230,7 @@ man_pages = [('index', 'he',
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'he',
-     u'he Documentation',
-     u"vizzuality", 'he',
+    ('index', 'he', u'he Documentation', u"vizzuality", 'he',
      'Data science project for Half earth', 'Miscellaneous'),
 ]
 

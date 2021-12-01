@@ -7,28 +7,28 @@ library(plyr)
 library(dplyr)
 
 give_lab= function(gp, df = d){
-  m = lm(time_s ~ size_km2, df %>% 
+  m = lm(time_s ~ size_km2, df %>%
            filter(success==TRUE & Gp == gp))
-  eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2, 
+  eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2,
                    list(a = format(unname(coef(m)[1]), digits = 2),
                         b = format(unname(coef(m)[2]), digits = 2),
                         r2 = format(summary(m)$r.squared, digits = 3)))
   lab = as.character(as.expression(eq))
   return(lab)
 }
-lab_df = as.data.frame(rbind (c(lab = give_lab(gp = "No Calculate Value"), Gp = "No Calculate Value"), 
+lab_df = as.data.frame(rbind (c(lab = give_lab(gp = "No Calculate Value"), Gp = "No Calculate Value"),
                 c(lab = give_lab(gp = "Calculate Value"), Gp = "Calculate Value")))
 
 
 
 
-ggplot(data = d %>% 
+ggplot(data = d %>%
          filter(success==TRUE), aes(x = size_km2, y = time_s))+
   geom_smooth(method='lm', formula= y~x, lty = 2, fill = "blue", alpha =0.2)+
-  geom_point(aes(  shape = simple_shape, fill = success, colour = success), 
+  geom_point(aes(  shape = simple_shape, fill = success, colour = success),
              #fill = "blue", colour = "blue",
              size = 5, alpha = 0.6)+
-  geom_point(data = d %>% 
+  geom_point(data = d %>%
                filter(success==FALSE), aes(x = size_km2, y = time_s, shape = simple_shape, fill = success, colour = success),
              #fill = "red", colour = "red",
              size = 5, alpha = 0.6)+
@@ -51,15 +51,15 @@ ggplot(data = d %>%
 ####profile
 library(reshape2)
 d = read.csv("/Users/gretacvega/Desktop/steps/Sheet 2-Table 1.csv")
-dd = d %>% 
-  add_row(Geoprocessing.Step = "Start", no_python=0, Python=0, 
+dd = d %>%
+  add_row(Geoprocessing.Step = "Start", no_python=0, Python=0,
           .before = 1) %>%
-  mutate(id = as.numeric(rownames(.))) %>% 
-  mutate(noPythonCum = cumsum(no_python), pythonCum = cumsum(Python)) %>% 
+  mutate(id = as.numeric(rownames(.))) %>%
+  mutate(noPythonCum = cumsum(no_python), pythonCum = cumsum(Python)) %>%
   mutate(noPythonCum = noPythonCum/sum(d$no_python), pythonCum = pythonCum/sum(d$Python)) %>%
-  melt(id.vars = c("id", "Geoprocessing.Step", 
-                   #"steptype", 
-                   "no_python", "Python" )) %>% 
+  melt(id.vars = c("id", "Geoprocessing.Step",
+                   #"steptype",
+                   "no_python", "Python" )) %>%
   mutate( steptype = ifelse((no_python == 0 & variable == "noPythonCum"),1,
                              ifelse((Python == 0 & variable == "pythonCum"),
                                     1,0)))
@@ -70,11 +70,11 @@ ggplot(data = dd, aes(x = id, y = value))+
   geom_text(data = dd %>% filter(steptype == 0 & Geoprocessing.Step != "Calculate Value"),
             aes(label=Geoprocessing.Step, colour = variable,), check_overlap = TRUE, size = 3,
             nudge_x = 0.25,
-            nudge_y = -0.02, 
+            nudge_y = -0.02,
             hjust = 0)+
   geom_text(data = dd %>% filter(steptype == 0 & Geoprocessing.Step == "Calculate Value"),
             aes(label=Geoprocessing.Step, colour = variable), check_overlap = TRUE, size = 5, x =c(3,10.8),y =c(0.9,0.999),
-            nudge_y = 0.05, 
+            nudge_y = 0.05,
             nudge_x = -2,
             hjust = 0)+
   scale_alpha_manual(values = c(1,0), guide = 'none')+

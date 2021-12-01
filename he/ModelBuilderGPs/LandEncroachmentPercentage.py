@@ -9,7 +9,7 @@ import numpy
 def getAreaRaster(rst):
     arr = arcpy.da.TableToNumPyArray(rst, "COUNT")
     a,= arr.tolist()[0]
-    return a 
+    return a
 
 def LandEncroachmentPercentage(crf_name="land_encroachment.crf", geometry="unique_square", output_table="C:\\Users\\Viz1\\Documents\\ArcGIS\\Projects\\SuperSample\\SuperSample.gdb\\ZonalSt_unique_1"):  # LandEncroachmentPercentage
 

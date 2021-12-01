@@ -1,11 +1,10 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3 up inside
+.PHONY: clean data lint requirements up inside help
 
 #################################################################################
 # GLOBALS                                                                       #
 #################################################################################
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
 PROJECT_NAME = he
 
@@ -22,12 +21,12 @@ endif
 up:
 	docker-compose build && docker-compose up
 
-## init the folder as a github repository https://kbroman.org/github_tutorial/pages/init.html
-init-git:
-	git init && git remote add origin git@github.com:Vizzuality/he
+## Get inside the main container
+inside:
+	docker exec -it he-notebooks bash
 
 ## init the github hooks set up https://pre-commit.com/ and test them.
-init-prehooks: init-git
+init-prehooks:
 	pre-commit install && pre-commit run --all-files
 
 ## autoformat your code with yapf and then lint it using flake8
@@ -42,30 +41,10 @@ requirements: test_environment
 	python3 -m pip install -U pip setuptools wheel
 	python3 -m pip install -r requirements.txt
 
-# ## Make Dataset
-# data: requirements
-# 	python3 src/data/make_dataset.py data/raw data/processed
-
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
-
-## Upload Data to S3
-sync_data_to_s3:
-ifeq (default,$(PROFILE))
-	aws s3 sync data/ s3://$(BUCKET)/data/
-else
-	aws s3 sync data/ s3://$(BUCKET)/data/ --profile $(PROFILE)
-endif
-
-## Download Data from S3
-sync_data_from_s3:
-ifeq (default,$(PROFILE))
-	aws s3 sync s3://$(BUCKET)/data/ data/
-else
-	aws s3 sync s3://$(BUCKET)/data/ data/ --profile $(PROFILE)
-endif
 
 ## Set up python interpreter environment
 create_environment:

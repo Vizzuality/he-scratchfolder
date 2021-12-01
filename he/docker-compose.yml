@@ -33,12 +33,11 @@ services:
       ports:
         - 8888:8888
       container_name: he_jupyter_notebook
+      env_file:
+        - .env
       command: "start-notebook.sh \
         --NotebookApp.token=''"
     #   environment:
     #         - DASK_SCHEDULER_ADDRESS="tcp://scheduler:8786"
       #extra_hosts:
       #  - "mymachine:<your_ip>"
-
-
-

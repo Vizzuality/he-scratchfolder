@@ -11,7 +11,7 @@ sel_grid =grid_intersect %>%
          #Rar_cact,Rar_coni,
          Rar_all)
 
-country_rar = 
+country_rar =
   sel_grid %>%
   group_by(GID_0) %>%
   summarize(max_amph=max(Rar_amph),
@@ -28,12 +28,12 @@ head(country_rar)
 res_grid=grid_intersect %>%
   select(-Rar_amph,-Rar_bird,-Rar_mamm,-Rar_rept,
          -Rar_cact,-Rar_coni,
-         -Rar_all, 
-         -Rich_amph,	-Rich_bird,	-Rich_mamm,	-Rich_rept,	
-         -Rich_cact,	-Rich_coni,	
-         -Rich_all, 
+         -Rar_all,
+         -Rich_amph,	-Rich_bird,	-Rich_mamm,	-Rich_rept,
+         -Rich_cact,	-Rich_coni,
+         -Rich_all,
          -ID, -FID_L0Glob,	-Shape__Are,	-Shape__Len, -OBJECTID, -Shape_Leng,	-Shape_Area)  %>%
-  distinct()%>% 
+  distinct()%>%
   inner_join(country_rar, by = "GID_0")
 
 
@@ -55,7 +55,7 @@ get_bio_sentence = function(df){
     if("all"%in%sel_taxa&nb_taxa>1){
       sentence_tx2 = character()
       for (tx in 2: nb_taxa){ #for each taxa
-        
+
         tx_bit = paste0(sel_taxa[tx], ", ")
         if(tx == nb_taxa-1){ #if the taxa we are in is before the last one, we remove the space and coma add "and"
           tx_bit = paste0(substr(tx_bit,1,nchar(tx_bit)-2), " and ")
@@ -65,27 +65,27 @@ get_bio_sentence = function(df){
         }
         sentence_tx2 = paste0(sentence_tx2, tx_bit)
       }
-      sentence_tx2 = paste0( " When analysed as single taxons, the rarity of ",sentence_tx2) 
+      sentence_tx2 = paste0( " When analysed as single taxons, the rarity of ",sentence_tx2)
       sentence_tx = paste0(sentence_tx, sentence_tx2)#paste0(substr(sentence_tx,1,nchar(sentence_tx)-2), sentence_tx2)
     }
   }
   return(sentence_tx)
-  
+
 }
 
 
 get_bio_sentence(df = res_grid[which(res_grid$GID_0 =="ARG"),])
 
 get_human_sentence = function(df){
-  
+
   anthr_names = c("urban use", "irrigated agriculture", "rainfed agriculture", "rangeland")
   hum_levels = c("Less than a quarter of the country", "Less than half of the country", "More than half of the country","Most of the country")
   anth_vals = c(df$PROP_Urban, df$PROP_Irrig, df$PROP_Rainf,df$PROP_Range)
-  
+
   anth_total = sum(anth_vals)
   main_act = anthr_names[which.max(anth_vals)]
   main_val = anth_vals[which.max(anth_vals)]
-  hum_level = 
+  hum_level =
     ifelse(anth_total>0.75, hum_levels[4],
            ifelse(anth_total>0.5, hum_levels[3],
                   ifelse(anth_total>0.25, hum_levels[2],hum_levels[1])))
@@ -102,11 +102,11 @@ for (i in 1:length(res_grid$GID_0)){
   b_sent = get_bio_sentence(df)
   h_sent = get_human_sentence(df)
   if(length(b_sent)==0){
-    
+
     sentence = paste("In",country,  tolower(h_sent))
-    
+
   }else{sentence = paste(country, b_sent, h_sent)}
-  
+
   sentence_list[[i]]=sentence
 }
 sentence_res = ldply(sentence_list)
