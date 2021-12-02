@@ -26,7 +26,7 @@ RUN apt-get update && \
     ; \
     source $NVM_DIR/nvm.sh; \
     nvm install --lts --latest-npm \
-    && npm install @mapbox/mapbox-gl-style-spec --global
+    && npm i -g @mapbox/mapbox-gl-style-spec
 
 RUN git clone https://github.com/mapbox/tippecanoe.git && \
 	cd tippecanoe && \
@@ -35,6 +35,8 @@ RUN git clone https://github.com/mapbox/tippecanoe.git && \
 RUN git clone git://github.com/mapbox/mbutil.git && \
 	cd mbutil && \
 	./mb-util -h && python setup.py install && cd ..
+
+RUN npm i -g mapshaper@0.5.67
 
 RUN export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
