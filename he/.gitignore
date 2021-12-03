@@ -1,16 +1,13 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$py.class
-.vscode/
-.DS_Store
-Untitled*.ipynb
 
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -22,11 +19,9 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -47,8 +42,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-.hypothesis/
-.pytest_cache/
 
 # Translations
 *.mo
@@ -56,15 +49,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
-db.sqlite3
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
 
 # Sphinx documentation
 docs/_build/
@@ -72,36 +56,37 @@ docs/_build/
 # PyBuilder
 target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# DotEnv configuration
 .env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-properties.json
-# Spyder project settings
-.spyderproject
-.spyproject
+*/*.env
 
-# Rope project settings
-.ropeproject
+# Database
+*.db
+*.rdb
 
-# mkdocs documentation
-/site
+# Pycharm
+.idea
 
-# mypy
+# VS Code
+.vscode/
+
+# Spyder
+.spyproject/
+
+# Jupyter NB Checkpoints
+.ipynb_checkpoints/
+
+# exclude data from source control by default
+/data/
+
+# Mac OS-specific storage files
+.DS_Store
+
+# vim
+*.swp
+*.swo
+
+# Mypy cache
 .mypy_cache/
+
+.tox

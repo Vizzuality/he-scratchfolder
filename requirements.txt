@@ -1,2 +1,0 @@
-arcgis==1.6.1
-arcpy
